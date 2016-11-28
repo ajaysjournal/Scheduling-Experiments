@@ -1,6 +1,7 @@
 package scratch;
 
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.broadcast.Broadcast;
 import spark.util.SparkUtil;
 
 import java.io.Serializable;
@@ -37,6 +38,17 @@ public class Timetable implements Serializable{
 	private final HashMap<Integer, Group> groups;
 	private final HashMap<Integer, Timeslot> timeslots;
 	private Class classes[];
+
+	public  JavaRDD<Class> classesRDD ;
+	public static boolean setParallel = false;
+
+	public JavaRDD<Class> setParallel(){
+        Timetable.setParallel = true;
+
+        return SparkUtil.getSparkContext().parallelize(new ArrayList<Class>(Arrays.asList(classes)));
+
+
+    }
 
 	private int numClasses = 0;
 
@@ -340,44 +352,97 @@ public class Timetable implements Serializable{
 	 * @return numClashes
 	 */
 	public int calcClashes() {
+        TimetableGA.countCalcCall++;
+
 		int clashes = 0;
 
-		for (Class classA : this.classes) {
-			// Check room capacity
-			int roomCapacity = this.getRoom(classA.getRoomId()).getRoomCapacity();
-			int groupSize = this.getGroup(classA.getGroupId()).getGroupSize();
-			
-			if (roomCapacity < groupSize) {
-				clashes++;
-			}
+		this.classesRDD = this.setParallel();
+        int count = 0;
+            if (classesRDD != null) {
+                 count = classesRDD.map(c -> {
+                    int roomCapacity = this.getRoom(c.getRoomId()).getRoomCapacity();
+                    int groupSize = this.getGroup(c.getGroupId()).getGroupSize();
+                    return roomCapacity < groupSize ? 1 : 0;
+                }).reduce((c1, c2) -> c1 + c2);
 
-			// Check if room is taken
-			for (Class classB : this.classes) {
-				if (classA.getRoomId() == classB.getRoomId() && classA.getTimeslotId() == classB.getTimeslotId()
-						&& classA.getClassId() != classB.getClassId()) {
-					clashes++;
-					break;
-				}
-			}
+                Broadcast<Class []> broadcastVar = SparkUtil.getSparkContext().broadcast(this.classes);
+                broadcastVar.value();
 
-			// Check if professor is available
-			for (Class classB : this.classes) {
-				if (classA.getProfessorId() == classB.getProfessorId() && classA.getTimeslotId() == classB.getTimeslotId()
-						&& classA.getClassId() != classB.getClassId()) {
-					clashes++;
-					break;
-				}
-			}
-		}
+                 count += classesRDD.map(c -> {
+                    for (Class classB: broadcastVar.value()) {
+                        if (c.getRoomId() == classB.getRoomId() && c.getTimeslotId() == classB.getTimeslotId()
+                                && c.getClassId() != classB.getClassId()) {
+                            return 1;
+                        }
+                    }
+                    return 0;
+                }).reduce((c1, c2) -> c1 + c2);
 
-		return clashes;
+                count += classesRDD.map(c -> {
+                    for (Class classB: broadcastVar.value()) {
+                        if (c.getProfessorId() == classB.getProfessorId() && c.getTimeslotId() == classB.getTimeslotId()
+                                && c.getClassId() != classB.getClassId()) {
+                            return 1;
+                        }
+                    }
+                    return 0;
+                }).reduce((c1, c2) -> c1 + c2);
+
+
+            }
+
+
+
+
+
+
+        for (Class classA : this.classes) {
+            // Check room capacity
+            int roomCapacity = this.getRoom(classA.getRoomId()).getRoomCapacity();
+            int groupSize = this.getGroup(classA.getGroupId()).getGroupSize();
+
+            if (roomCapacity < groupSize) {
+                clashes++;
+            }
+
+            // Check if room is taken
+            for (Class classB : this.classes) {
+                if (classA.getRoomId() == classB.getRoomId() && classA.getTimeslotId() == classB.getTimeslotId()
+                        && classA.getClassId() != classB.getClassId()) {
+                    clashes++;
+                    break;
+                }
+            }
+
+            // Check if professor is available
+            for (Class classB : this.classes) {
+                if (classA.getProfessorId() == classB.getProfessorId() && classA.getTimeslotId() == classB.getTimeslotId()
+                        && classA.getClassId() != classB.getClassId()) {
+                    clashes++;
+                    break;
+                }
+            }
+        }
+        //System.out.println("Count "+count+"Clashes "+clashes);
+        return count;
+	   // return clashes;
 	}
 
 
 	public int calcClashes2() {
 
-		JavaRDD<Class> dataSet =  SparkUtil.getSparkContext().parallelize(new ArrayList<Class>(Arrays.asList(classes)));
+		JavaRDD<Class> classesRDD =  SparkUtil.getSparkContext().parallelize(new ArrayList<Class>(Arrays.asList(classes)));
 		int clashes = 0;
+
+        int count = classesRDD.map(c -> {
+            int roomCapacity = this.getRoom(c.getRoomId()).getRoomCapacity();
+            int groupSize = this.getGroup(c.getGroupId()).getGroupSize();
+            return roomCapacity  < groupSize ? 1 : 0;
+        }).reduce((c1,c2) -> c1 + c2);
+
+
+        System.out.print("Count"+count);
+
 
         /*Persons = dataSet.filter(individual -> {
             if(individual.getName().contains("smart"))
@@ -388,33 +453,7 @@ public class Timetable implements Serializable{
 */
 
 
-		for (Class classA : this.classes) {
-			// Check room  capacity
-			int roomCapacity = this.getRoom(classA.getRoomId()).getRoomCapacity();
-			int groupSize = this.getGroup(classA.getGroupId()).getGroupSize();
 
-			if (roomCapacity  < groupSize) {
-				clashes++;
-			}
-
-			// Check if room is taken
-			for (Class classB : this.classes) {
-				if (classA.getRoomId() == classB.getRoomId() && classA.getTimeslotId() == classB.getTimeslotId()
-						&& classA.getClassId() != classB.getClassId()) {
-					clashes++;
-					break;
-				}
-			}
-
-			// Check if professor is available
-			for (Class classB : this.classes) {
-				if (classA.getProfessorId() == classB.getProfessorId() && classA.getTimeslotId() == classB.getTimeslotId()
-						&& classA.getClassId() != classB.getClassId()) {
-					clashes++;
-					break;
-				}
-			}
-		}
 
 		return clashes;
 	}

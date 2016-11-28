@@ -1,11 +1,14 @@
 package scratch;
+
+import java.io.Serializable;
+
 /**
  * Simple timeslot abstraction -- just represents a timeslot (like "Wed 9:00am-11:00am").
  *  
  * @author bkanber
  *
  */
-public class Timeslot {
+public class Timeslot implements Serializable{
     private final int timeslotId;
     private final String timeslot;
 

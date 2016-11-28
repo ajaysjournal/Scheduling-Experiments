@@ -1,9 +1,11 @@
 package scratch;
 
+import java.io.Serializable;
+
 /**
  * Simple course module abstraction, which defines the Professors teaching the module.
  */
-public class Module {
+public class Module implements Serializable{
     private final int moduleId;
     private final String moduleCode;
     private final String module;

@@ -36,11 +36,13 @@ public class SortInSpark {
         }).reduce((i1, i2) -> { return Double.parseDouble(i1.getId()) < Double.parseDouble(i2.getId()) ? i1:i2;});
 
 
-        List<Person> nPersons = dataSet.filter(individual -> {
-            if(Double.parseDouble(individual.getId())>500)
-                    return true;
-            else return false;
-        }).collect();
+        List<Person> nPersons = dataSet.filter(
+                individual -> {
+                         if (Double.parseDouble(individual.getId()) > 500)
+                             return true;
+                        else return false;
+                }
+        ).collect();
 
         System.out.println("id > 500 counts "+nPersons.size());
 

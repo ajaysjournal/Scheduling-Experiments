@@ -1,6 +1,8 @@
 package scratch;
 
 
+import scratch.visulization.ClassRDD;
+
 import java.io.Serializable;
 
 public class GeneticAlgorithm implements Serializable{
@@ -87,6 +89,10 @@ public class GeneticAlgorithm implements Serializable{
 	 */
 	public void evalPopulation(Population population, Timetable timetable) {
 		double populationFitness = 0;
+
+		// todo Define RDD here
+        ClassRDD.setParallelRDD(timetable.getClasses());
+
 
 		// Loop over population evaluating individuals and summing population
 		// fitness
@@ -177,6 +183,7 @@ public class GeneticAlgorithm implements Serializable{
 			// Apply crossover to this individual?
 			if (this.crossoverRate > Math.random() && populationIndex >= this.elitismCount) {
 				// Initialize offspring
+
 				Individual offspring = new Individual(parent1.getChromosomeLength());
 				
 				// Find second parent

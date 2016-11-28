@@ -1,9 +1,11 @@
 package scratch;
 
+import java.io.Serializable;
+
 /**
  * A simple class abstraction -- basically a container for class, group, module, professor, timeslot, and room IDs
  */
-public class Class {
+public class Class implements Serializable{
     private final int classId;
     private final int groupId;
     private final int moduleId;

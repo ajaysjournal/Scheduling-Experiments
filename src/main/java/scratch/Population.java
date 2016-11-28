@@ -39,8 +39,13 @@ public class Population implements Serializable{
 		for(int i =0;i<populationSize;i++){
 			this.population.add(new Individual());
 		}
+/*
 		// todo - paralize the population at the end
 		JavaRDD<Individual> dataSet = SparkUtil.getSparkContext().parallelize(this.population);
+
+		List<Individual> tempPop =  dataSet.filter(p -> {
+			return this.population.add(new Individual(timetable));
+		 }).collect();*/
 
 		// Loop over population size
 		for (int individualCount = 0; individualCount < populationSize; individualCount++) {
@@ -97,9 +102,17 @@ public class Population implements Serializable{
 	public Individual getFittest(int offset) {
 		// todo : This must be Parallalized
 		TimetableGA.countFittestCall++;
+		JavaRDD<Individual > populationJavaRDD = SparkUtil.getSparkContext().parallelize(this.population);
+		Individual fitestIndividual = populationJavaRDD.map( i -> {
+			return i;
+		}).reduce((i1, i2) -> {return i1.getFitness()>i2.getFitness()?i1:i2;} );
+
+		//System.out.print("fitestIndividual"+fitestIndividual.toString());
+		return fitestIndividual;
+
 		//Collections.sort(this.population, (o1, o2) -> ( if(o1.getFitness > o2.getFitnes())) return
 		// Order population by fitness
-		Collections.sort(this.population, new Comparator<Individual>() {
+		/*Collections.sort(this.population, new Comparator<Individual>() {
 
 			public int compare(Individual o1, Individual o2) {
 
@@ -111,9 +124,12 @@ public class Population implements Serializable{
 				return 0;
 			}
 		});
+		return this.population.get(offset);
+		*/
+
 
 		// Return the fittest individual
-		return this.population.get(offset);
+
 	}
 
 	/**

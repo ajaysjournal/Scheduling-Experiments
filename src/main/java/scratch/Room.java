@@ -1,9 +1,11 @@
 package scratch;
 
+import java.io.Serializable;
+
 /**
  * Simple Room abstraction -- used to store the room capacity and compare against the student Group's size.
  */
-public class Room {
+public class Room implements Serializable{
 	private final int roomId;
 	private final String roomNumber;
 	private final int capacity;

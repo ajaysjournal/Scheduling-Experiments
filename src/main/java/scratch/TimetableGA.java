@@ -31,14 +31,14 @@
  */
 public class TimetableGA {
 	static int countFittestCall = -1;
-
+	static int countCalcCall = -1;
     public static void main(String[] args) {
     	// Get a Timetable object with all the available information.
         Timetable timetable = initializeTimetable();  // Hard Coded Initialization
         
         // Initialize GA
 		Date st_time = new Date();
-        GeneticAlgorithm ga = new GeneticAlgorithm(100, 0.01, 0.9, 2, 5);
+        GeneticAlgorithm ga = new GeneticAlgorithm(8000, 0.01, 0.9, 2, 5);
 
 
 		// Initialize population
@@ -56,6 +56,8 @@ public class TimetableGA {
         // Start evolution loop
         while (ga.isTerminationConditionMet(generation, 1000) == false
             && ga.isTerminationConditionMet(population) == false) {
+
+
             // Print fitness
             System.out.println("G" + generation + " Best fitness: " + population.getFittest(0).getFitness());
 
@@ -120,6 +122,7 @@ public class TimetableGA {
         }
 
         System.out.print("countFittestCall = "+countFittestCall);
+		System.out.print("countCalcCall = "+countCalcCall);
     }
 
     /**
