@@ -1,9 +1,10 @@
 package scratch;
 
 
-import scratch.visulization.ClassRDD;
+import scratch.ttg.spark.rdd_datasets.PopulationRDD;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class GeneticAlgorithm implements Serializable{
 
@@ -27,7 +28,7 @@ public class GeneticAlgorithm implements Serializable{
 	 * Initialize population
 	 * 
 	 * @param
-	 *            The length of the individuals chromosome
+	 *            timetable length of the individuals chromosome
 	 * @return population The initial population generated
 	 */
 	public Population initPopulation(Timetable timetable) {
@@ -90,22 +91,8 @@ public class GeneticAlgorithm implements Serializable{
     public double calcFitness2(Individual individual, Timetable timetable) {
 
 
-        // Create new timetable object to use -- cloned from an existing timetable
-        Timetable threadTimetable = new Timetable(timetable);
-        threadTimetable.createClasses(individual);
 
-        // todo Define RDD here
-        //ClassRDD.setParallelRDD(threadTimetable.getClasses());
-
-
-
-        // Calculate fitness
-        int clashes = threadTimetable.calcClashes();
-        double fitness = 1 / (double) (clashes + 1);
-
-        individual.setFitness(fitness);
-
-        return fitness;
+        return 2.2;
     }
 
 	/**
@@ -114,18 +101,43 @@ public class GeneticAlgorithm implements Serializable{
 	 * @param population
 	 * @param timetable
 	 */
-	public void evalPopulation(Population population, Timetable timetable) {
+	public Population evalPopulation(Population population, Timetable timetable) {
 		double populationFitness = 0;
 
-
-
-		// Loop over population evaluating individuals and summing population
+        // Loop over population evaluating individuals and summing population
 		// fitness
+
+
+        List<Individual> processedPopulation = PopulationRDD.getPopulationRDD().map(iChromesome -> {
+            Timetable tt = new Timetable(timetable);
+            tt.createClasses(iChromesome);
+            double fitness = 1 / (double) (tt.calcClashes() + 1);
+            iChromesome.setFitness(fitness);
+            return iChromesome;
+        }).collect();
+
+        population.setPopulation(processedPopulation);
+
+        for (Individual individual : population.getIndividuals()) {
+            populationFitness += individual.getFitness();
+        }
+        System.out.println("populationFitness"+populationFitness);
+
+        population.setPopulationFitness(populationFitness);
+
+        /*
 		for (Individual individual : population.getIndividuals()) {
 			populationFitness += this.calcFitness(individual, timetable);
 		}
 
 		population.setPopulationFitness(populationFitness);
+         */
+		// evaluate population based on the paralized data
+        // for each chrome some its calculating the fitness
+        //
+
+        return population;
+
 	}
 
 	/**
@@ -142,8 +154,10 @@ public class GeneticAlgorithm implements Serializable{
 		Population tournament = new Population(this.tournamentSize);
 
 		// Add random individuals to the tournament
-		population.shuffle();
-		for (int i = 0; i < this.tournamentSize; i++) {
+		  population.shuffle(); // todo -- uncomment the shuffle
+
+
+        for (int i = 0; i < this.tournamentSize; i++) {
 			Individual tournamentIndividual = population.getIndividual(i);
 			tournament.setIndividual(i, tournamentIndividual);
 		}

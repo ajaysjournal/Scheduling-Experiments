@@ -1,4 +1,4 @@
-package scratch.visulization;
+package scratch.ttg.spark.rdd_datasets;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.broadcast.Broadcast;

@@ -1,6 +1,6 @@
  package scratch;
 
- import java.util.Date;
+ import scratch.ttg.spark.rdd_datasets.PopulationRDD;
 
  /**
  * Don't be daunted by the number of classes in this chapter -- most of them are
@@ -37,26 +37,25 @@ public class TimetableGA {
         //Timetable timetable = initializeTimetable();  // Hard Coded Initialization
         Timetable timetable = initializeTimetable_test_data2();  // Hard Coded Initialization
 
-        // Initialize GA
-		Date st_time = new Date();
         GeneticAlgorithm ga = new GeneticAlgorithm(100, 0.01, 0.9, 2, 5);
 
 
 		// Initialize population
         Population population = ga.initPopulation(timetable);
 
-        Date end_time = new Date();
-        long difference = end_time.getTime() - st_time.getTime();
-        System.out.println("Time took "+difference+"milliseconds");
+        // todo parallize the population
+        PopulationRDD.setPopulationRDD(population.getPopulation());
+
+
         // Evaluate population
-        ga.evalPopulation(population, timetable);
+        population = ga.evalPopulation(population, timetable);
         
         // Keep track of current generation
         int generation = 1;
         
         // Start evolution loop
-        st_time = new Date();
-        while (ga.isTerminationConditionMet(generation, 100) == false
+
+        while (ga.isTerminationConditionMet(generation, 1000) == false
             && ga.isTerminationConditionMet(population) == false) {
 
 
@@ -66,16 +65,24 @@ public class TimetableGA {
             // Apply crossover
             population = ga.crossoverPopulation(population);
 
+            // todo Optimize  the population
+            PopulationRDD.setPopulationRDD(population.getPopulation());
+
+
             // Apply mutation
             population = ga.mutatePopulation(population, timetable);
+            // todo parallize the population
+
+            // todo Optimize  the population
+            PopulationRDD.setPopulationRDD(population.getPopulation());
+
 
             // Evaluate population
-            ga.evalPopulation(population, timetable);
+            population = ga.evalPopulation(population, timetable);
 
             // Increment the current generation
             generation++;
-            end_time = new Date();
-            System.out.println("Time took for this generation "+(end_time.getTime() - st_time.getTime())+"milliseconds");
+
         }
 
         // Print fitness
