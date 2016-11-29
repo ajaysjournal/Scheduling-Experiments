@@ -5,17 +5,17 @@ import java.util.*;
 
 public class Population implements Serializable{
 	private Individual population2[];
-	private List<Individual> population;
+	private ArrayList<Individual> population;
 
 
 	private double populationFitness = -1;
 
 
-	public List<Individual> getPopulation() {
+	public ArrayList<Individual> getPopulation() {
 		return population;
 	}
 
-	public void setPopulation(List<Individual> population) {
+	public void setPopulation(ArrayList<Individual> population) {
 		this.population = population;
 	}
 
@@ -109,7 +109,6 @@ public class Population implements Serializable{
 	 * @return individual Fittest individual at offset
 	 */
 	public Individual getFittest(int offset) {
-		System.out.print("offset"+offset);
 		// todo : This must be Parallalized
 		TimetableGA.countFittestCall++;
 		/*JavaRDD<Individual > populationJavaRDD = SparkUtil.getSparkContext().parallelize(this.population);
@@ -122,7 +121,7 @@ public class Population implements Serializable{
 
 		//Collections.sort(this.population, (o1, o2) -> ( if(o1.getFitness > o2.getFitnes())) return
 		// Order population by fitness
-		Collections.sort(new ArrayList(this.population), new Comparator<Individual>() {
+		Collections.sort(this.population, new Comparator<Individual>() {
 
 			public int compare(Individual o1, Individual o2) {
 
@@ -204,13 +203,13 @@ public class Population implements Serializable{
 		//Collections.shuffle(population,new Random(System.nanoTime()));
 
 
-		/*Random rnd = new Random();
+		Random rnd = new Random();
 		for (int i = population.size() - 1; i > 0; i--) {
 			int index = rnd.nextInt(i + 1);
 			Individual a = population.get(index);
 			population.set(index,population.get(i)) ;
 			population.set(i,a);
-		}*/
+		}
 	}
 
 }

@@ -34,10 +34,10 @@ public class TimetableGA {
 	static int countCalcCall = -1;
     public static void main(String[] args) {
     	// Get a Timetable object with all the available information.
-        //Timetable timetable = initializeTimetable();  // Hard Coded Initialization
-        Timetable timetable = initializeTimetable_test_data2();  // Hard Coded Initialization
+        Timetable timetable = initializeTimetable();  // Hard Coded Initialization
+        //Timetable timetable = initializeTimetable_test_data2();  // Hard Coded Initialization
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(100, 0.01, 0.9, 2, 5);
+        GeneticAlgorithm ga = new GeneticAlgorithm(10000, 0.01, 0.9, 2, 5);
 
 
 		// Initialize population
@@ -55,7 +55,7 @@ public class TimetableGA {
         
         // Start evolution loop
 
-        while (ga.isTerminationConditionMet(generation, 1000) == false
+        while (ga.isTerminationConditionMet(generation, 2000) == false
             && ga.isTerminationConditionMet(population) == false) {
 
 

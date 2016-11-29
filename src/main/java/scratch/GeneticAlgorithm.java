@@ -4,6 +4,7 @@ package scratch;
 import scratch.ttg.spark.rdd_datasets.PopulationRDD;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GeneticAlgorithm implements Serializable{
@@ -116,22 +117,18 @@ public class GeneticAlgorithm implements Serializable{
             return iChromesome;
         }).collect();
 
-        population.setPopulation(processedPopulation);
+        population.setPopulation(new ArrayList(processedPopulation));
 
         for (Individual individual : population.getIndividuals()) {
             populationFitness += individual.getFitness();
         }
-        System.out.println("populationFitness"+populationFitness);
+        System.out.println("Parallel - populationFitness"+populationFitness);
 
         population.setPopulationFitness(populationFitness);
 
-        /*
-		for (Individual individual : population.getIndividuals()) {
-			populationFitness += this.calcFitness(individual, timetable);
-		}
+        /****************/
 
-		population.setPopulationFitness(populationFitness);
-         */
+
 		// evaluate population based on the paralized data
         // for each chrome some its calculating the fitness
         //
