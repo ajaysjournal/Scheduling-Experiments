@@ -34,11 +34,12 @@ public class TimetableGA {
 	static int countCalcCall = -1;
     public static void main(String[] args) {
     	// Get a Timetable object with all the available information.
-        Timetable timetable = initializeTimetable();  // Hard Coded Initialization
-        
+        //Timetable timetable = initializeTimetable();  // Hard Coded Initialization
+        Timetable timetable = initializeTimetable_test_data2();  // Hard Coded Initialization
+
         // Initialize GA
 		Date st_time = new Date();
-        GeneticAlgorithm ga = new GeneticAlgorithm(8000, 0.01, 0.9, 2, 5);
+        GeneticAlgorithm ga = new GeneticAlgorithm(100, 0.01, 0.9, 2, 5);
 
 
 		// Initialize population
@@ -54,7 +55,8 @@ public class TimetableGA {
         int generation = 1;
         
         // Start evolution loop
-        while (ga.isTerminationConditionMet(generation, 1000) == false
+        st_time = new Date();
+        while (ga.isTerminationConditionMet(generation, 100) == false
             && ga.isTerminationConditionMet(population) == false) {
 
 
@@ -72,6 +74,8 @@ public class TimetableGA {
 
             // Increment the current generation
             generation++;
+            end_time = new Date();
+            System.out.println("Time took for this generation "+(end_time.getTime() - st_time.getTime())+"milliseconds");
         }
 
         // Print fitness
@@ -186,4 +190,47 @@ public class TimetableGA {
 		timetable.addGroup(10, 25,new int[] { 3, 4 });
 		return timetable;
 	}
+
+
+     private static Timetable initializeTimetable_test_data2() {
+         // Create timetable
+         Timetable timetable = new Timetable();
+
+         // Set up rooms
+         timetable.addRoom(1, "A1", 15);
+         timetable.addRoom(2, "B1", 30);
+
+         // Set up timeslots
+         timetable.addTimeslot(1, "Mon 9:00 - 11:00");
+         timetable.addTimeslot(2, "Mon 11:00 - 13:00");
+         timetable.addTimeslot(5, "Tue 11:00 - 13:00");
+         timetable.addTimeslot(6, "Tue 13:00 - 15:00");
+         timetable.addTimeslot(7, "Wed 9:00 - 11:00");
+         timetable.addTimeslot(10, "Thu 9:00 - 11:00");
+         timetable.addTimeslot(11, "Thu 11:00 - 13:00");
+         timetable.addTimeslot(13, "Fri 9:00 - 11:00");
+
+         // Set up professors
+         timetable.addProfessor(1, "Dr P Smith");
+         timetable.addProfessor(2, "Mrs E Mitchell");
+         timetable.addProfessor(3, "Dr R Williams");
+         timetable.addProfessor(4, "Mr A Thompson");
+
+         // Set up modules and define the professors that teach them
+         timetable.addModule(1, "cs1", "Computer Science", new int[] { 1, 2 });
+         timetable.addModule(2, "en1", "English", new int[] { 1, 3 });
+         timetable.addModule(3, "ma1", "Maths", new int[] { 1, 2 });
+         timetable.addModule(4, "ph1", "Physics", new int[] { 3, 4 });
+         timetable.addModule(5, "hi1", "History", new int[] { 4 });
+         timetable.addModule(6, "dr1", "Drama", new int[] { 1, 4 });
+
+         // Set up student groups and the modules they take.
+         timetable.addGroup(1, 10, new int[] { 1, 3, 4 });
+         timetable.addGroup(2, 30, new int[] { 2, 3, 5, 6 });
+         timetable.addGroup(3, 18, new int[] { 3, 4, 5 });
+         timetable.addGroup(4, 25, new int[] { 1, 4 });
+
+
+         return timetable;
+     }
 }

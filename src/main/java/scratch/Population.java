@@ -1,8 +1,5 @@
 package scratch;
 
-import org.apache.spark.api.java.JavaRDD;
-import spark.util.SparkUtil;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -102,17 +99,17 @@ public class Population implements Serializable{
 	public Individual getFittest(int offset) {
 		// todo : This must be Parallalized
 		TimetableGA.countFittestCall++;
-		JavaRDD<Individual > populationJavaRDD = SparkUtil.getSparkContext().parallelize(this.population);
+		/*JavaRDD<Individual > populationJavaRDD = SparkUtil.getSparkContext().parallelize(this.population);
 		Individual fitestIndividual = populationJavaRDD.map( i -> {
 			return i;
 		}).reduce((i1, i2) -> {return i1.getFitness()>i2.getFitness()?i1:i2;} );
 
 		//System.out.print("fitestIndividual"+fitestIndividual.toString());
-		return fitestIndividual;
+		return fitestIndividual;*/
 
 		//Collections.sort(this.population, (o1, o2) -> ( if(o1.getFitness > o2.getFitnes())) return
 		// Order population by fitness
-		/*Collections.sort(this.population, new Comparator<Individual>() {
+		Collections.sort(this.population, new Comparator<Individual>() {
 
 			public int compare(Individual o1, Individual o2) {
 
@@ -125,7 +122,7 @@ public class Population implements Serializable{
 			}
 		});
 		return this.population.get(offset);
-		*/
+
 
 
 		// Return the fittest individual

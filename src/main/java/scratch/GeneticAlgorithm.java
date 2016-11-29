@@ -26,7 +26,7 @@ public class GeneticAlgorithm implements Serializable{
 	/**
 	 * Initialize population
 	 * 
-	 * @param chromosomeLength
+	 * @param
 	 *            The length of the individuals chromosome
 	 * @return population The initial population generated
 	 */
@@ -68,11 +68,17 @@ public class GeneticAlgorithm implements Serializable{
 	 */
 	public double calcFitness(Individual individual, Timetable timetable) {
 
-		// Create new timetable object to use -- cloned from an existing timetable
+
+        // Create new timetable object to use -- cloned from an existing timetable
 		Timetable threadTimetable = new Timetable(timetable);
 		threadTimetable.createClasses(individual);
 
-		// Calculate fitness
+        // todo Define RDD here
+        //ClassRDD.setParallelRDD(threadTimetable.getClasses());
+
+
+
+        // Calculate fitness
 		int clashes = threadTimetable.calcClashes();
 		double fitness = 1 / (double) (clashes + 1);
 
@@ -80,6 +86,27 @@ public class GeneticAlgorithm implements Serializable{
 
 		return fitness;
 	}
+
+    public double calcFitness2(Individual individual, Timetable timetable) {
+
+
+        // Create new timetable object to use -- cloned from an existing timetable
+        Timetable threadTimetable = new Timetable(timetable);
+        threadTimetable.createClasses(individual);
+
+        // todo Define RDD here
+        //ClassRDD.setParallelRDD(threadTimetable.getClasses());
+
+
+
+        // Calculate fitness
+        int clashes = threadTimetable.calcClashes();
+        double fitness = 1 / (double) (clashes + 1);
+
+        individual.setFitness(fitness);
+
+        return fitness;
+    }
 
 	/**
 	 * Evaluate population
@@ -90,8 +117,6 @@ public class GeneticAlgorithm implements Serializable{
 	public void evalPopulation(Population population, Timetable timetable) {
 		double populationFitness = 0;
 
-		// todo Define RDD here
-        ClassRDD.setParallelRDD(timetable.getClasses());
 
 
 		// Loop over population evaluating individuals and summing population

@@ -1,7 +1,6 @@
 package scratch;
 
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.broadcast.Broadcast;
 import spark.util.SparkUtil;
 
 import java.io.Serializable;
@@ -355,21 +354,18 @@ public class Timetable implements Serializable{
         TimetableGA.countCalcCall++;
 
 		int clashes = 0;
-
-		this.classesRDD = this.setParallel();
+        /*
         int count = 0;
-            if (classesRDD != null) {
-                 count = classesRDD.map(c -> {
+            if (ClassRDD.getParallelRDD() != null) {
+                 count = ClassRDD.getParallelRDD().map(c -> {
                     int roomCapacity = this.getRoom(c.getRoomId()).getRoomCapacity();
                     int groupSize = this.getGroup(c.getGroupId()).getGroupSize();
                     return roomCapacity < groupSize ? 1 : 0;
                 }).reduce((c1, c2) -> c1 + c2);
 
-                Broadcast<Class []> broadcastVar = SparkUtil.getSparkContext().broadcast(this.classes);
-                broadcastVar.value();
 
-                 count += classesRDD.map(c -> {
-                    for (Class classB: broadcastVar.value()) {
+                 count += ClassRDD.getParallelRDD().map(c -> {
+                    for (Class classB: ClassRDD.getBroadcastClassRDDVar()) {
                         if (c.getRoomId() == classB.getRoomId() && c.getTimeslotId() == classB.getTimeslotId()
                                 && c.getClassId() != classB.getClassId()) {
                             return 1;
@@ -378,8 +374,8 @@ public class Timetable implements Serializable{
                     return 0;
                 }).reduce((c1, c2) -> c1 + c2);
 
-                count += classesRDD.map(c -> {
-                    for (Class classB: broadcastVar.value()) {
+                count += ClassRDD.getParallelRDD().map(c -> {
+                    for (Class classB: ClassRDD.getBroadcastClassRDDVar()) {
                         if (c.getProfessorId() == classB.getProfessorId() && c.getTimeslotId() == classB.getTimeslotId()
                                 && c.getClassId() != classB.getClassId()) {
                             return 1;
@@ -391,7 +387,7 @@ public class Timetable implements Serializable{
 
             }
 
-
+        */
 
 
 
@@ -424,8 +420,8 @@ public class Timetable implements Serializable{
             }
         }
         //System.out.println("Count "+count+"Clashes "+clashes);
-        return count;
-	   // return clashes;
+        // return count;
+	    return clashes;
 	}
 
 

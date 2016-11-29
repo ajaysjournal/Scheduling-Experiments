@@ -9,7 +9,7 @@ import org.apache.spark.api.java.JavaSparkContext;
     private static JavaSparkContext sparkContext ;
 
     static{
-         sparkContext = new JavaSparkContext("local[4]", "Spark On Genetic Algorithm");
+         sparkContext = new JavaSparkContext("local[1]", "Spark On Genetic Algorithm");
     }
 
     public static JavaSparkContext getSparkContext() {

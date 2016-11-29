@@ -1,6 +1,7 @@
 package scratch.visulization;
 
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.broadcast.Broadcast;
 import scratch.Class;
 import spark.util.SparkUtil;
 
@@ -14,15 +15,22 @@ public class ClassRDD {
 
     private  static JavaRDD<Class> classesRDD ;
 
-    public static JavaRDD<Class> setParallelRDD(Class [] classes) {
-        return SparkUtil.getSparkContext().parallelize(new ArrayList<Class>(Arrays.asList(classes)));
+    private  static  Broadcast<Class []> broadcastClassRDDVar ;
+
+    public static void setParallelRDD(Class [] classes) {
+        classesRDD=SparkUtil.getSparkContext().parallelize(new ArrayList<Class>(Arrays.asList(classes)));
+        broadcastClassRDDVar = SparkUtil.getSparkContext().broadcast(classes);
     }
 
     public static JavaRDD<Class> getParallelRDD() throws NullPointerException {
         if (classesRDD != null) {
-            return this.classesRDD;
+            return classesRDD;
         }
 
         return null;
+    }
+
+    public static Class[] getBroadcastClassRDDVar(){
+        return  broadcastClassRDDVar.value();
     }
 }
