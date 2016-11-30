@@ -1,7 +1,7 @@
 package spark_trial;
 
 import org.apache.spark.api.java.JavaRDD;
-import spark.util.SparkUtil;
+import all.util.SparkUtil;
 
 import java.util.ArrayList;
 import java.util.List;

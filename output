@@ -1,0 +1,78 @@
+G1 Best fitness: 0.05263157894736842
+G2 Best fitness: 0.0625
+G3 Best fitness: 0.07142857142857142
+G4 Best fitness: 0.07142857142857142
+G5 Best fitness: 0.07142857142857142
+G6 Best fitness: 0.07142857142857142
+G7 Best fitness: 0.07692307692307693
+G8 Best fitness: 0.07692307692307693
+G9 Best fitness: 0.07692307692307693
+G10 Best fitness: 0.07692307692307693
+G11 Best fitness: 0.08333333333333333
+G12 Best fitness: 0.1
+G13 Best fitness: 0.1111111111111111
+G14 Best fitness: 0.1111111111111111
+G15 Best fitness: 0.1111111111111111
+G16 Best fitness: 0.1111111111111111
+G17 Best fitness: 0.1111111111111111
+G18 Best fitness: 0.1111111111111111
+G19 Best fitness: 0.1111111111111111
+G20 Best fitness: 0.125
+G21 Best fitness: 0.125
+G22 Best fitness: 0.2
+G23 Best fitness: 0.2
+G24 Best fitness: 0.2
+G25 Best fitness: 0.2
+G26 Best fitness: 0.2
+G27 Best fitness: 0.2
+G28 Best fitness: 0.2
+G29 Best fitness: 0.2
+G30 Best fitness: 0.2
+G31 Best fitness: 0.2
+G32 Best fitness: 0.2
+G33 Best fitness: 0.2
+G34 Best fitness: 0.2
+G35 Best fitness: 0.2
+G36 Best fitness: 0.2
+G37 Best fitness: 0.25
+G38 Best fitness: 0.25
+G39 Best fitness: 0.25
+G40 Best fitness: 0.25
+G41 Best fitness: 0.25
+G42 Best fitness: 0.3333333333333333
+G43 Best fitness: 0.3333333333333333
+G44 Best fitness: 0.5
+G45 Best fitness: 0.5
+G46 Best fitness: 0.5
+G47 Best fitness: 0.5
+G48 Best fitness: 0.5
+Time Spent -611 ms 
+Solution found in 49 generations
+Final solution fitness: 1.0
+Clashes: 0
+Class 1 -   Module: Chemistry ,                   Group: 1,                   Room: SB-A1,                   Professor: Mrs E Mitchell,                     Time: Tue 11:00 - 13:00
+Class 2 -   Module: Maths,                   Group: 1,                   Room: SB-D1,                   Professor: Dr P Smith,                     Time: Wed 13:00 - 15:00
+Class 3 -   Module: Physics,                   Group: 1,                   Room: SB-D1,                   Professor: Dr R Williams,                     Time: Tue 9:00 - 11:00
+Class 4 -   Module: English,                   Group: 2,                   Room: RE-B1,                   Professor: Dr R Williams,                     Time: Fri 9:00 - 11:00
+Class 5 -   Module: Maths,                   Group: 2,                   Room: RE-B1,                   Professor: Dr P Smith,                     Time: Mon 13:00 - 15:00
+Class 6 -   Module: History,                   Group: 2,                   Room: RE-B1,                   Professor: Mr A Thompson,                     Time: Thu 9:00 - 11:00
+Class 7 -   Module: Drama,                   Group: 2,                   Room: RE-B1,                   Professor: Mr A Thompson,                     Time: Fri 13:00 - 15:00
+Class 8 -   Module: Maths,                   Group: 3,                   Room: SB-D1,                   Professor: Dr P Smith,                     Time: Wed 11:00 - 13:00
+Class 9 -   Module: Physics,                   Group: 3,                   Room: SB-D1,                   Professor: Mr A Thompson,                     Time: Tue 11:00 - 13:00
+Class 10 -   Module: History,                   Group: 3,                   Room: SB-D1,                   Professor: Mr A Thompson,                     Time: Mon 13:00 - 15:00
+Class 11 -   Module: Chemistry ,                   Group: 4,                   Room: SB-F1,                   Professor: Mrs E Mitchell,                     Time: Mon 11:00 - 13:00
+Class 12 -   Module: Physics,                   Group: 4,                   Room: SB-F1,                   Professor: Mr A Thompson,                     Time: Wed 9:00 - 11:00
+Class 13 -   Module: English,                   Group: 5,                   Room: RE-B1,                   Professor: Dr P Smith,                     Time: Tue 13:00 - 15:00
+Class 14 -   Module: Maths,                   Group: 5,                   Room: SB-F1,                   Professor: Mrs E Mitchell,                     Time: Tue 13:00 - 15:00
+Class 15 -   Module: History,                   Group: 5,                   Room: RE-B1,                   Professor: Mr A Thompson,                     Time: Thu 13:00 - 15:00
+Class 16 -   Module: Chemistry ,                   Group: 6,                   Room: SB-F1,                   Professor: Mrs E Mitchell,                     Time: Fri 9:00 - 11:00
+Class 17 -   Module: Physics,                   Group: 6,                   Room: SB-F1,                   Professor: Mr A Thompson,                     Time: Mon 9:00 - 11:00
+Class 18 -   Module: History,                   Group: 6,                   Room: RE-B1,                   Professor: Mr A Thompson,                     Time: Wed 13:00 - 15:00
+Class 19 -   Module: Chemistry ,                   Group: 7,                   Room: RE-B1,                   Professor: Mrs E Mitchell,                     Time: Mon 9:00 - 11:00
+Class 20 -   Module: Maths,                   Group: 7,                   Room: RE-B1,                   Professor: Mrs E Mitchell,                     Time: Wed 9:00 - 11:00
+Class 21 -   Module: English,                   Group: 8,                   Room: SB-F1,                   Professor: Dr R Williams,                     Time: Thu 11:00 - 13:00
+Class 22 -   Module: Drama,                   Group: 8,                   Room: RE-B1,                   Professor: Dr P Smith,                     Time: Tue 11:00 - 13:00
+Class 23 -   Module: Chemistry ,                   Group: 9,                   Room: RE-B1,                   Professor: Dr P Smith,                     Time: Mon 11:00 - 13:00
+Class 24 -   Module: Drama,                   Group: 9,                   Room: RE-B1,                   Professor: Mr A Thompson,                     Time: Tue 9:00 - 11:00
+Class 25 -   Module: Maths,                   Group: 10,                   Room: SB-F1,                   Professor: Dr P Smith,                     Time: Thu 9:00 - 11:00
+Class 26 -   Module: Physics,                   Group: 10,                   Room: RE-B1,                   Professor: Dr R Williams,                     Time: Wed 11:00 - 13:00
