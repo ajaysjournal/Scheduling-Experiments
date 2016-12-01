@@ -2,7 +2,7 @@ package pdp.project.parallel.ga.ttg;
 
 import java.io.Serializable;
 
-public class Individual implements Serializable{
+public class Individual implements Serializable , Comparable<Individual>{
 	
 	/**
 	 * In this case, the chromosome is an array of integers rather than a string. 
@@ -212,5 +212,8 @@ public class Individual implements Serializable{
 	}
 
 
-	
+	@Override
+	public int compareTo(Individual o) {
+		return Double.compare(this.getFitness(),o.getFitness());
+	}
 }

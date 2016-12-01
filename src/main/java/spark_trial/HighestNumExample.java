@@ -39,6 +39,9 @@ public class HighestNumExample {
         //JavaRDD<Integer> dataSet = sc.parallelize(l, slices);
         JavaRDD<Double> dataSet = sc.parallelize(randIntegers);
 
+        List<Double> a = sc.parallelize(randIntegers).top(3);
+        System.out.println("....thrid top "+sc.parallelize(randIntegers).top(3).get(2));
+
         double highest = dataSet.map(i -> {
             return i;
         }).reduce((i1, i2) -> {return i1>i2?i1:i2;} );

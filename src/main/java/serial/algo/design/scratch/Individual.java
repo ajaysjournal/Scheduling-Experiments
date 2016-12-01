@@ -8,6 +8,7 @@ public class Individual {
 	private int[] chromosome;
 	private double fitness = -1;
 
+
 	/**
 	 * Initializes random individual based on a timetable
 	 * 

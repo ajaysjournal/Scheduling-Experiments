@@ -4,6 +4,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,6 +46,20 @@ public class SortInSpark {
         ).collect();
 
         System.out.println("id > 500 counts "+nPersons.size());
+
+
+        // Sort and take the 3rd largest --
+        Person n2Persons = (Person) dataSet.top(3, new Comparator<Person>() {
+            public int compare(Person o1, Person o2) {
+                if (Double.parseDouble(o1.getId()) > Double.parseDouble(o2.getId())) {
+                    return -1;
+                } else if (Double.parseDouble(o1.getId()) < Double.parseDouble(o2.getId())) {
+                    return 1;
+                }
+                return 0;
+            }
+        } );
+
 
 
         nPersons = dataSet.filter(individual -> {

@@ -1,9 +1,9 @@
  package pdp.project.parallel.ga.ttg;
 
  import all.util.Files;
- import pdp.project.parallel.ga.ttg.ttg.spark.rdd_datasets.PopulationRDD;
+import pdp.project.parallel.ga.ttg.ttg.spark.rdd_datasets.PopulationRDD;
 
- import java.util.Date;
+import java.util.Date;
 
  /**
  * Don't be daunted by the number of classes in this chapter -- most of them are
@@ -35,10 +35,18 @@
 public class ParallelTimetableGA {
 	static int countFittestCall = -1;
 	static int countCalcCall = -1;
-
+	static long calFitnessTime=0;
      public static void main(String[] args) {
-         ParallelTimetableGA.parallelTimetableGA(5000,1000,"scratch");
-         // ParallelTimetableGA.parallelTimetableGA(1000,1000,"parallel test2 - n1 ");
+         ParallelTimetableGA.parallelTimetableGA(100,1000,"scratch");
+         /*ParallelTimetableGA.parallelTimetableGA(100,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(200,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(300,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(400,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(500,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(1000,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(1500,1000,"scratch");
+         ParallelTimetableGA.parallelTimetableGA(2000,1000,"scratch");
+         */// ParallelTimetableGA.parallelTimetableGA(1000,1000,"parallel test2 - n1 ");
          // ParallelTimetableGA.parallelTimetableGA(5000,1000,"parallel test3 - n1 50");
         //  ParallelTimetableGA.parallelTimetableGA(10000,1000,"parallel test4 - n1");
 
@@ -55,46 +63,37 @@ public class ParallelTimetableGA {
         // Initialize GA
         Date st_time = new Date();
         Date gSt = new  Date();
+
         GeneticAlgorithm ga = new GeneticAlgorithm(populationSize, 0.01, 0.9, 2, 5);
 
 
          // Initialize population
         Population population = ga.initPopulation(timetable);
+        PopulationRDD.setPopulationRDD(population.getPopulation());
 
-
-        // Evaluate population
+         // Evaluate population
         population = ga.evalPopulation(population, timetable);
         PopulationRDD.setPopulationRDD(population.getPopulation());
-        
+
         // Keep track of current generation
         int generation = 1;
         
         // Start evolution loop
-		stats.append("--- \n   ### Program Statistics \n|Generations | Time Took(ms) |\n");
-		stats.append("| ------------- | :-----------: |\n");
-		Date gEn=new Date();
 		while (ga.isTerminationConditionMet(generation, maxIteration) == false
             && ga.isTerminationConditionMet(population) == false) {
 
-
-            // Print fitness
-			gEn  = new Date();
-			long dif = gEn.getTime()-gSt.getTime();
-			stats.append("| Generation " + generation + " Best fitness: " + population.getFittest(0).getFitness()+"|"+dif+"|\n");
-			gSt=new Date();
-            // Apply crossover
+             // Apply crossover
             population = ga.crossoverPopulation(population);
 
-            // todo Optimize  the population
             PopulationRDD.setPopulationRDD(population.getPopulation());
 
              // Apply mutation
             population = ga.mutatePopulation(population, timetable);
-
             PopulationRDD.setPopulationRDD(population.getPopulation());
 
             // Evaluate population
             population = ga.evalPopulation(population, timetable);
+            PopulationRDD.setPopulationRDD(population.getPopulation());
 
             // Increment the current generation
             generation++;
@@ -125,6 +124,7 @@ public class ParallelTimetableGA {
             classIndex++;
         }
          output.append(stats);
+         output.append("- CalcFitness Time - "+ParallelTimetableGA.calFitnessTime);
          Files.createFile("results/report/"+filename+"output.md",output.toString());
          //Files.createFile("output"+Math.random()*100,output.toString());
 
@@ -163,35 +163,37 @@ public class ParallelTimetableGA {
 		Timetable timetable = new Timetable();
 
 		// Set up rooms
-		timetable.addRoom(1, "SB-100", 15);
-		timetable.addRoom(2, "RE-200", 30);
-		timetable.addRoom(4, "SB-101", 20);
-		timetable.addRoom(5, "SB-102", 25);
+		timetable.addRoom(1, "SB-100", 15   );
+		timetable.addRoom(2, "RE-200", 30   );
+		timetable.addRoom(4, "SB-101", 20   );
+		timetable.addRoom(5, "SB-102", 25   );
 
 		// Set up timeslots
-		timetable.addTimeslot(1, 	"Mon 9:00 -  11:00");
-		timetable.addTimeslot(2, 	"Mon 11:00 - 13:00");
-		timetable.addTimeslot(3, 	"Mon 13:00 - 15:00");
-		timetable.addTimeslot(4, 	"Tue 9:00 -  11:00");
-		timetable.addTimeslot(5, 	"Tue 11:00 - 13:00");
-		timetable.addTimeslot(6, 	"Tue 13:00 - 15:00");
-		timetable.addTimeslot(7, 	"Wed 9:00 -  11:00");
-		timetable.addTimeslot(8, 	"Wed 11:00 - 13:00");
-		timetable.addTimeslot(9, 	"Wed 13:00 - 15:00");
-		timetable.addTimeslot(10,	"Thu 9:00 -  11:00");
-		timetable.addTimeslot(11, "Thu 11:00 - 13:00");
-		timetable.addTimeslot(12, "Thu 13:00 - 15:00");
-		timetable.addTimeslot(13, "Fri 9:00 -  11:00");
-		timetable.addTimeslot(14, "Fri 11:00 - 13:00");
-		timetable.addTimeslot(15, "Fri 13:00 - 15:00");
+		timetable.addTimeslot(1, 	"Mon 9:00 -  11:00"     );
+		timetable.addTimeslot(2, 	"Mon 11:00 - 13:00"     );
+		timetable.addTimeslot(3, 	"Mon 13:00 - 15:00"     );
+		timetable.addTimeslot(4, 	"Tue 9:00 -  11:00"     );
+		timetable.addTimeslot(5, 	"Tue 11:00 - 13:00"     );
+		timetable.addTimeslot(6, 	"Tue 13:00 - 15:00"     );
+		timetable.addTimeslot(7, 	"Wed 9:00 -  11:00"     );
+		timetable.addTimeslot(8, 	"Wed 11:00 - 13:00"     );
+		timetable.addTimeslot(9, 	"Wed 13:00 - 15:00"     );
+		timetable.addTimeslot(10,	"Thu 9:00 -  11:00"     );
+		timetable.addTimeslot(11, "Thu 11:00 - 13:00"       );
+		timetable.addTimeslot(12, "Thu 13:00 - 15:00"       );
+		timetable.addTimeslot(13, "Fri 9:00 -  11:00"       );
+		timetable.addTimeslot(14, "Fri 11:00 - 13:00"       );
+		timetable.addTimeslot(15, "Fri 13:00 - 15:00"       );
 
 		// Set up professors
-		timetable.addProfessor(1, "Dr P Smith Rez");
-		timetable.addProfessor(2, "Mrs E Mitchell");
-		timetable.addProfessor(3, "Dr R Williams");
-		timetable.addProfessor(4, "Mr A Thompson");
+		timetable.addProfessor(1, "Dr P Smith Rez"  );
+		timetable.addProfessor(2, "Mrs E Mitchell" );
+		timetable.addProfessor(3, "Dr R Williams"  );
+		timetable.addProfessor(4, "Mr A Thompson"  );
         
 		// Set up modules and define the professors that teach them
+
+
 		timetable.addModule(1, "CH100", "Chemistry", new int[] { 1, 2 });
 		timetable.addModule(2, "EN100", "English-1", new int[] { 1, 3 });
 		timetable.addModule(3, "MA101", "Maths-012", new int[] { 1, 2 });
@@ -200,16 +202,17 @@ public class ParallelTimetableGA {
 		timetable.addModule(6, "DR100", "Drama-002", new int[] { 1, 4 });
 
 		// Set up student groups and the modules they take.
-		timetable.addGroup(1, 10, new int[] { 1, 3, 4 });
-		timetable.addGroup(2, 30, new int[] { 2, 3, 5, 6 });
-		timetable.addGroup(3, 18, new int[] { 3, 4, 5 });
-		timetable.addGroup(4, 25, new int[] { 1, 4 });
-		timetable.addGroup(5, 20, new int[] { 2, 3, 5 });
-		timetable.addGroup(6, 22, new int[] { 1, 4, 5 });
-		timetable.addGroup(7, 16, new int[] { 1, 3 });
-		timetable.addGroup(8, 18, new int[] { 2, 6 });
-		timetable.addGroup(9, 24, new int[] { 1, 6 });
-		timetable.addGroup(10, 25,new int[] { 3, 4 });
+
+		timetable.addGroup(1, 10,       new int[] { 1, 3, 4 });
+		timetable.addGroup(2, 30,       new int[] { 2, 3, 5, 6 });
+		timetable.addGroup(3, 18,       new int[] { 3, 4, 5 });
+		timetable.addGroup(4, 25,       new int[] { 1, 4 });
+		timetable.addGroup(5, 20,       new int[] { 2, 3, 5 });
+		timetable.addGroup(6, 22,       new int[] { 1, 4, 5 });
+		timetable.addGroup(7, 16,       new int[] { 1, 3 });
+		timetable.addGroup(8, 18,       new int[] { 2, 6 });
+		timetable.addGroup(9, 24,       new int[] { 1, 6 });
+		timetable.addGroup(10,25,      new int[] { 3, 4 });
 		return timetable;
 	}
 

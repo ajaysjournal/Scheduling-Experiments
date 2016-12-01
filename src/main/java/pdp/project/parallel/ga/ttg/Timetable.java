@@ -1,7 +1,8 @@
 package pdp.project.parallel.ga.ttg;
 
-import org.apache.spark.api.java.JavaRDD;
 import all.util.SparkUtil;
+import org.apache.spark.api.java.JavaRDD;
+import pdp.project.parallel.ga.ttg.ttg.spark.rdd_datasets.ClassRDD;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -351,13 +352,41 @@ public class Timetable implements Serializable{
 	 * @return numClashes
 	 */
 	public int calcClashes() {
-        ParallelTimetableGA.countCalcCall++;
-
 		int clashes = 0;
+
+		int count = 0;
+		if (ClassRDD.getParallelRDD() != null) {
+			count = ClassRDD.getParallelRDD().map(c -> {
+				int roomCapacity = this.getRoom(c.getRoomId()).getRoomCapacity();
+				int groupSize = this.getGroup(c.getGroupId()).getGroupSize();
+				return roomCapacity < groupSize ? 1 : 0;
+			}).reduce((c1, c2) -> c1 + c2);
+
+
+			count += ClassRDD.getParallelRDD().map(c -> {
+				for (ClassRoom classB: ClassRDD.getBroadcastClassRDDVar()) {
+					if (c.getRoomId() == classB.getRoomId() && c.getTimeslotId() == classB.getTimeslotId()
+							&& c.getClassId() != classB.getClassId()) {
+						return 1;
+					}
+				}
+				return 0;
+			}).reduce((c1, c2) -> c1 + c2);
+
+			count += ClassRDD.getParallelRDD().map(c -> {
+				for (ClassRoom classB: ClassRDD.getBroadcastClassRDDVar()) {
+					if (c.getProfessorId() == classB.getProfessorId() && c.getTimeslotId() == classB.getTimeslotId()
+							&& c.getClassId() != classB.getClassId()) {
+						return 1;
+					}
+				}
+				return 0;
+			}).reduce((c1, c2) -> c1 + c2);
+		}
         /*
         Too much of prallaziation . Not good
 
-        int count = 0;
+       		int count = 0;
             if (ClassRDD.getParallelRDD() != null) {
                  count = ClassRDD.getParallelRDD().map(c -> {
                     int roomCapacity = this.getRoom(c.getRoomId()).getRoomCapacity();
@@ -385,8 +414,6 @@ public class Timetable implements Serializable{
                     }
                     return 0;
                 }).reduce((c1, c2) -> c1 + c2);
-
-
             }
 
         */

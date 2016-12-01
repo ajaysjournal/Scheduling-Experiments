@@ -158,7 +158,7 @@ public class SerialTimetableGA {
 		timetable.addProfessor(2, "Mrs E Mitchell");
 		timetable.addProfessor(3, "Dr R Williams");
 		timetable.addProfessor(4, "Mr A Thompson");
-        
+
 		// Set up modules and define the professors that teach them
 		timetable.addModule(1, "CH100", "Chemistry", new int[] { 1, 2 });
 		timetable.addModule(2, "EN100", "English-1", new int[] { 1, 3 });

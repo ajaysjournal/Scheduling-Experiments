@@ -102,14 +102,13 @@ public class GeneticAlgorithm implements Serializable{
 	 * @param population
 	 * @param timetable
 	 */
+
 	public Population evalPopulation(Population population, Timetable timetable) {
 		double populationFitness = 0;
 
-        // Loop over population evaluating individuals and summing population
-		// fitness
 
-
-        List<Individual> processedPopulation = PopulationRDD.getPopulationRDD().map(iChromesome -> {
+        List<Individual> processedPopulation = PopulationRDD.getPopulationRDD().map(
+                iChromesome -> {
             Timetable tt = new Timetable(timetable);
             tt.createClasses(iChromesome);
             double fitness = 1 / (double) (tt.calcClashes() + 1);
@@ -117,8 +116,9 @@ public class GeneticAlgorithm implements Serializable{
             return iChromesome;
         }).collect();
 
-        population.setPopulation(new ArrayList(processedPopulation));
 
+        population.setPopulation(new ArrayList(processedPopulation));
+        // todo paralze
         for (Individual individual : population.getIndividuals()) {
             populationFitness += individual.getFitness();
         }
@@ -143,9 +143,7 @@ public class GeneticAlgorithm implements Serializable{
 
 		// Add random individuals to the tournament
 		  population.shuffle();
-
-
-        for (int i = 0; i < this.tournamentSize; i++) {
+         for (int i = 0; i < this.tournamentSize; i++) {
 			Individual tournamentIndividual = population.getIndividual(i);
 			tournament.setIndividual(i, tournamentIndividual);
 		}
@@ -180,7 +178,12 @@ public class GeneticAlgorithm implements Serializable{
 
 		// Loop over current population by fitness
 		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
-			Individual individual = population.getFittest(populationIndex);
+
+            // sequential code
+		    // Individual individual = population.getFittest(populationIndex);
+
+            // Parallized code
+            Individual individual = PopulationRDD.getSortedData().get(populationIndex);
 
 			// Create random individual to swap genes with
 			Individual randomIndividual = new Individual(timetable);
@@ -204,7 +207,9 @@ public class GeneticAlgorithm implements Serializable{
 		// Return mutated population
 		return newPopulation;
 	}
+    public void crossoverPopulationParallel(int populationSize) {
 
+    }
     /**
      * Apply crossover to population
      * 
@@ -217,8 +222,14 @@ public class GeneticAlgorithm implements Serializable{
 
 		// Loop over current population by fitness
 		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
-			Individual parent1 = population.getFittest(populationIndex);
 
+		    // Sequential code
+		    //Individual parent1 = population.getFittest(populationIndex);
+
+            // Parallized code
+            Individual parent1 = PopulationRDD.getSortedData().get(populationIndex);
+
+			//System.out.print("SP"+parent1.getFitness()+"\nPP"+PopulationRDD.getSortedData().get(populationIndex).getFitness());
 			// Apply crossover to this individual?
 			if (this.crossoverRate > Math.random() && populationIndex >= this.elitismCount) {
 				// Initialize offspring

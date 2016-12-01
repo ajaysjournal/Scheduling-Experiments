@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Population implements Serializable{
-	private Individual population2[];
+	//private Individual population2[];
 	private ArrayList<Individual> population;
 
 

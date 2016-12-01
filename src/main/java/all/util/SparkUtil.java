@@ -11,7 +11,8 @@ import org.apache.spark.api.java.JavaSparkContext;
     static{
          //sparkContext = new JavaSparkContext("local[50]", "Spark On Genetic Algorithm"); // 50 threads
          sparkContext = new JavaSparkContext("local[*]", "Spark On Genetic Algorithm");  // based on logical cores it will automatically creates the thread
-         //sparkContext.setLogLevel("WARN");  // to turn off the spark
+
+        //sparkContext.setLogLevel("WARN");  // to turn off the spark
 
     }
 
