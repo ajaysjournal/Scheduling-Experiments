@@ -3,6 +3,9 @@
   - ParallelTimetableGA.java is main class for parallel code.
   - SerialTimetableGA.java is main class for serial code.
 
+
+![alt tag](https://github.com/ajayramesh23/ubiquitous-eureka/blob/master/algorithm.png?raw=true)
+
 # Time Table from Parallel Genetic Algorithm 
 | Class | Module| Group  |  Room  | Professor | Time |
 | ------------- | :-------------: | :-------------:  |  :-------------:  | :-------------: | -------------: |
