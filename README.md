@@ -1,4 +1,9 @@
-# Time Table from Serial Genetic Algorithm 
+- Build 
+  - Reports.java will run various test cases
+  - ParallelTimetableGA.java is main class for parallel code.
+  - SerialTimetableGA.java is main class for serial code.
+
+# Time Table from Parallel Genetic Algorithm 
 | Class | Module| Group  |  Room  | Professor | Time |
 | ------------- | :-------------: | :-------------:  |  :-------------:  | :-------------: | -------------: |
 |Class-1|Chemistry|1|SB-100|Dr P Smith Rez|Tue 9:00 -  11:00|
