@@ -1,3 +1,8 @@
+# A Parallel Distributed Genetic Algorithm for Class Scheduling Problem and its performance analysis on MPICH, CUDA & Apache Spark
+---
+Genetic algorithm(GA) is an idea introduced in 1967, its core roots are from the Darwin’s theory of evolution. It is widely used in many fields relating to combinatorial optimization, machine learning, network routing, etc. We will design a parallel distributed genetic algorithm for Class scheduling problem , this problem is categorized as multi-constrained, NP-hard, combinatorial optimization problem . Our goal is to implement the designed algorithm for class scheduling in CUDA  ,MPICH [and Apache Spark  platforms to study on performance.
+---
+
 - Build 
   - Reports.java will run various test cases
   - ParallelTimetableGA.java is main class for parallel code.
