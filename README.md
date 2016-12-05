@@ -17,6 +17,9 @@ Genetic algorithm(GA) is an idea introduced in 1967, its core roots are from the
 
 ### Parallel Genetic Algorithm 
 
+I have used the Spark to implement the parallel code. Here I have used Java, Lambda expressions, and Spark functions to achieve it. I have devised more general version parallel algorithm of it so that any problem can apply this algorithm using in Apache Spark.
+
+
 ![alt tag](https://github.com/ajayramesh23/ubiquitous-eureka/blob/master/algorithm.png?raw=true)
 
 
