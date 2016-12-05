@@ -12,6 +12,9 @@ Genetic algorithm(GA) is an idea introduced in 1967, its core roots are from the
   - The `Reports.java` will run various test cases
   - `ParallelTimetableGA.java` is main class for parallel code.
   - SerialTimetableGA.java is main class for serial code.
+- Requirement
+  - Intellij Idea or Eclipce or Maven Build 
+  - Java 8
 
 
 
