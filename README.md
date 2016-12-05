@@ -4,7 +4,7 @@ Genetic algorithm(GA) is an idea introduced in 1967, its core roots are from the
 
 
 ---
-How to build the TTG - Apache Spark 
+### How to build the TTG - Apache Spark 
 
 - Build
   - Download the repository,open TTG-Spark using Intellij or Eclipse using Existing project.
